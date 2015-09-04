@@ -1,23 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include"images.h"
 
-#define DEBUG 0
-#define OK 0
-#define ERREUR 1
-
-typedef struct Image 
-{ 
-  unsigned char* pixels ; 
-  unsigned int largeur ; 
-  unsigned int hauteur ; 
-} t_image ;
-
-t_image CreerImage(int largeur, int hauteur)
+t_image *CreerImage(int largeur, int hauteur)
 {
-	t_image f;
-	f.pixels=malloc((15+largeur*hauteur)*sizeof(unsigned char));
-	f.hauteur=hauteur;
-	f.largeur=largeur;
+	t_image *f = malloc(sizeof(t_image));
+	f->pixels=malloc((15+largeur*hauteur)*sizeof(unsigned char));
+	f->hauteur=hauteur;
+	f->largeur=largeur;
 	return f;
 
 }
@@ -48,7 +38,7 @@ t_image* LireImagePGM(const char* nomFichier)
 	FILE* f= fopen(nomFichier,"r");
 	int largeur = 0 ;
 	int hauteur = 0 ;
-	t_image image;
+	t_image *image;
 	
 	
 	if(f!=NULL)
@@ -56,10 +46,9 @@ t_image* LireImagePGM(const char* nomFichier)
 		fseek(f, 3 , SEEK_SET);
 		fscanf(f,"%d %d",&largeur, &hauteur);
 		image = CreerImage(largeur, hauteur);
-		fread(image.pixels, (image.largeur*image.hauteur*sizeof(unsigned char)), 1, f);
+		fread(image->pixels-5, (image->largeur*image->hauteur*sizeof(unsigned char)), 1, f);
 		fclose(f);
-		t_image* retour = &image;
-		return retour;
+		return image;
 	}	
 	else
 		return NULL;
