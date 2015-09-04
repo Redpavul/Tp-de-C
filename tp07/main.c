@@ -23,12 +23,12 @@ int main()
 	//	f[0].pixels[i]=255;
 	//}
 	//Degrade(f, largeur, hauteur);
-	//Seuillage(f, 127);
+	Seuillage(f, 127);
 	//Negatif(f[0]);
 	//Miroir(f,MIROIR_HORIZONTAL);
-	EcrireImagePGM("test.pgm", f[0]);
+	EcrireImagePGM("test.pgm", *f);
 	AfficherImage("test.pgm");
 	
-	LibererImage(f[0]);
+	LibererImage(f);
 	return EXIT_SUCCESS;
 }

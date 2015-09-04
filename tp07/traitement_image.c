@@ -5,6 +5,12 @@
 
 
 
+
+#define SEUIL_PIXEL(valeur,seuil) (valeur > seuil) ? 0 : 255
+#define AFFICHER_FONCTION 
+
+
+
 void AfficherImage(char *nomFichier)
 {
 
@@ -16,20 +22,17 @@ void AfficherImage(char *nomFichier)
 
 
 
-void Seuillage(t_image image,  unsigned char seuil)
+void Seuillage(t_image* image,  unsigned char seuil)
 {
 
 	int i,j,temp;
 	temp=0;
-	for(i=0;i<image.hauteur;i++)
+	printf("%s",__func__);
+	for(i=0;i<image->hauteur;i++)
 	{
-		for(j=0;j<image.largeur;j++)
+		for(j=0;j<image->largeur;j++)
 		{
-
-			if(image.pixels[temp]<seuil)
-				image.pixels[temp]=0;
-			else
-				image.pixels[temp]=255;
+			image->pixels[temp]=SEUIL_PIXEL(image->pixels[temp],seuil);
 			temp++;
 			
 
@@ -40,7 +43,7 @@ void Seuillage(t_image image,  unsigned char seuil)
 
 
 
-void Degrade(t_image image)
+void Degrade(t_image* image)
 {
 	int i,j;
 	
@@ -49,12 +52,12 @@ void Degrade(t_image image)
 	
 		int temp = 0 ;
 
-	for(i=0;i<image.hauteur;i++)
+	for(i=0;i<image->hauteur;i++)
 	{
-		for(j=0;j<image.largeur;j++)
+		for(j=0;j<image->largeur;j++)
 		{
 
-			image.pixels[j*image.largeur+i]=temp;
+			image->pixels[j*image->largeur+i]=temp;
 /*			if(t+1>div)
 			{
 				t=0;
@@ -67,17 +70,17 @@ void Degrade(t_image image)
 
 }
 
-void Negatif (t_image image)
+void Negatif (t_image* image)
 {
 
 	int i,j,temp;
 	temp=0;
-	for(i=0;i<image.hauteur;i++)
+	for(i=0;i<image->hauteur;i++)
 	{
-		for(j=0;j<image.largeur;j++)
+		for(j=0;j<image->largeur;j++)
 		{
 
-			image.pixels[temp]=255-image.pixels[temp];
+			image->pixels[temp]=255-image->pixels[temp];
 			temp++;
 
 		}
@@ -86,7 +89,7 @@ void Negatif (t_image image)
 }
 
 
-void Miroir( t_image  image, char type)
+void Miroir( t_image* image, char type)
 {
 
 	int i,a,f;
@@ -97,18 +100,18 @@ void Miroir( t_image  image, char type)
 
 	if(type==1)
 	{
-		for(i=0;i<image.largeur;i++)
+		for(i=0;i<image->largeur;i++)
 		{
-			f=(image.hauteur-1)*(image.largeur-1)+i;
+			f=(image->hauteur-1)*(image->largeur-1)+i;
 			a=j;
 
 			while(a<f)
 			{
-				t=image.pixels[a];
-				image.pixels[a]=image.pixels[f];
-				image.pixels[f]=t;
-				f-=image.largeur;
-				a+=image.largeur;
+				t=image->pixels[a];
+				image->pixels[a]=image->pixels[f];
+				image->pixels[f]=t;
+				f-=image->largeur;
+				a+=image->largeur;
 			}
 			j++;
 		}
@@ -116,15 +119,15 @@ void Miroir( t_image  image, char type)
 	}
 	else
 	{
-		for(i=0;i<image.hauteur;i++)
+		for(i=0;i<image->hauteur;i++)
 		{
-			f=(j+1)* image.largeur -1 ;
-			a=(j*image.largeur);
+			f=(j+1)* image->largeur -1 ;
+			a=(j*image->largeur);
 			while(a<f)	
 			{
-				t=image.pixels[a];
-				image.pixels[a]=image.pixels[f];
-				image.pixels[f]=t;
+				t=image->pixels[a];
+				image->pixels[a]=image->pixels[f];
+				image->pixels[f]=t;
 				a++;
 				f--;
 			}
@@ -135,9 +138,9 @@ void Miroir( t_image  image, char type)
 }
 
 
-void LibererImage(t_image image)
+void LibererImage(t_image* image)
 {
-	free(image.pixels);
+	free(image->pixels);
 }
 
 
